@@ -1,0 +1,34 @@
+-- 1. Create Tablespace
+--Create a tablespace called "COURSES" with one datafile of 50Mb, the name of the datafile should be: courses1.dbf
+
+create tablespace COURSES datafile
+'courses1.dbf' size 50M
+EXTENT MANAGEMENT LOCAL 
+SEGMENT SPACE MANAGEMENT AUTO;
+
+-- 2. Create profile
+-- Create a profile named "administrativo" with the following specifications: 
+-- a) Idle time of 25 minutes 
+-- b) Failed login attempts 4 
+-- c) Onle one session per user
+
+CREATE PROFILE administrativo LIMIT 
+SESSIONS_PER_USER 1
+IDLE_TIME 25
+FAILED_LOGIN_ATTEMPTS 4;
+
+--3. Create user
+-- Create an user named with your github's username (In my case would be amartinezg) 
+-- with only 30Mb of space on tablespace, the profile should be "administrativo"
+
+create user AnaK111
+identified by 123
+default tablespace COURSES
+quota 30M on COURSES
+profile administrativo;
+
+-- 4. Setting up user
+--your user should be able to log in and have DBA privileges
+
+GRANT CONNECT,DBA TO AnaK111;
+grant connect, resource to AnaK111;
